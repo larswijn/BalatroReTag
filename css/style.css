@@ -96,6 +96,19 @@ textarea {
   height: 35em;
 }
 
+table {
+  border-spacing: 0;
+}
+
+tr th {
+  background-color: #31464F;
+}
+
+tr th, tr td {
+  padding: 12px;
+  border: 1px solid lightgray;
+}
+
 /* ==========================================================================
    Helper classes
    ========================================================================== */
