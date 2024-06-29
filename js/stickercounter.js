@@ -1,4 +1,4 @@
-import {jsonifySaveFile, readFile} from "/js/app.js";
+import {jsonifySaveFile, readFile} from "./app.js";
 
 let saveFile = "";
 let saveFileParsed;

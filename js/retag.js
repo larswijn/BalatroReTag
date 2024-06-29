@@ -1,4 +1,4 @@
-import {jsonifySaveFile, unjsonifyParsedSaveFile, readFile, downloadSaveFile} from "/js/app.js";
+import {jsonifySaveFile, unjsonifyParsedSaveFile, readFile, downloadSaveFile} from "./app.js";
 
 let fileOutput = document.getElementById("fileOutput");
 let saveFile = "";
