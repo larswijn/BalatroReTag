@@ -19,10 +19,18 @@ function isSaveFileBugged() {
     }
     // this part is for the shop / booster pack overlay:
     //   5: in shop
-    //   ACTION key in main dict
+    //   sanity check to confirm we are in the shop: `ACTION` key in main dict
     if (state === 5 && saveFileParsed.hasOwnProperty("ACTION")) {
       return true;
     }
+    // this part is for the softlock after skipping a bugged booster pack:
+    //    6: PLAY_TAROT
+    //    sanity check to confirm we are in the shop: `shop_booster` or `shop_jokers` keys exist
+    if (state === 6 && saveFileParsed.hasOwnProperty("cardAreas") &&
+      (saveFileParsed.cardAreas.hasOwnProperty("shop_booster") || saveFileParsed.cardAreas.hasOwnProperty("shop_jokers"))) {
+      return true;
+    }
+    //
     return false;
   } catch (error) {
     console.log("JSON error in isSaveFileBugged")
@@ -48,6 +56,8 @@ function fixSaveFile() {
       saveFileParsed.GAME.tags[tagKey] = "\"MANUAL_REPLACE\"";
     } else if (oldState === 5 && saveFileParsed.hasOwnProperty("ACTION")) {
       delete saveFileParsed["ACTION"];
+    } else if (oldState === 6) {
+      saveFileParsed.STATE = 7
     } else {
       console.log("How tf did you get here?");
     }
@@ -81,9 +91,16 @@ async function handleFile() {
   let userUpload = document.getElementById("saveFile");
   if (userUpload.files[0].name.includes("save") && userUpload.files[0].name.endsWith(".jkr")) {
     saveFile = await readFile(userUpload);
-    saveFileParsed = jsonifySaveFile(saveFile);
-    fileOutput.value = JSON.stringify(saveFileParsed, null, 4);
-    updateIsBugged();
+    try {
+      saveFileParsed = jsonifySaveFile(saveFile);
+      fileOutput.value = JSON.stringify(saveFileParsed, null, 4);
+      updateIsBugged();
+    } catch (error) {
+      console.log("JSON error in isSaveFileBugged")
+      updateIsBugged("Error reading file! Is this modded?")
+      console.log(error)
+      return false;
+    }
   } else {
     let href = `<a href='https://www.pcgamingwiki.com/wiki/Balatro#Save_game_data_location'>Where to find save.jkr</a>`
     fileOutput.value = "";
