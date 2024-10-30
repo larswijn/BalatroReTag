@@ -57,7 +57,7 @@ function fixSaveFile() {
     } else if (oldState === 5 && saveFileParsed.hasOwnProperty("ACTION")) {
       delete saveFileParsed["ACTION"];
     } else if (oldState === 6) {
-      saveFileParsed.STATE = 7
+      saveFileParsed.STATE = 5
     } else {
       console.log("How tf did you get here?");
     }
