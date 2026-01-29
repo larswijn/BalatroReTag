@@ -90,21 +90,20 @@ async function handleFile() {
   // handle the read the file, and update corresponding elements
   let userUpload = document.getElementById("saveFile");
   if (userUpload.files[0].name.includes("save") && userUpload.files[0].name.endsWith(".jkr")) {
-    saveFile = await readFile(userUpload);
     try {
+      saveFile = await readFile(userUpload);
       saveFileParsed = jsonifySaveFile(saveFile);
       fileOutput.value = JSON.stringify(saveFileParsed, null, 4);
       updateIsBugged();
     } catch (error) {
       console.log("JSON error in isSaveFileBugged")
-      updateIsBugged("Error reading file! Is this modded?")
+      updateIsBugged("Error reading file!")
       console.log(error)
       return false;
     }
   } else {
-    let href = `<a href='https://www.pcgamingwiki.com/wiki/Balatro#Save_game_data_location'>Where to find save.jkr</a>`
     fileOutput.value = "";
-    updateIsBugged(`Incorrectly named file '${userUpload.files[0].name}'! Use 'save.jkr' instead. ${href}.`);
+    updateIsBugged(`Incorrectly named file '${userUpload.files[0].name}'! Use 'save.jkr' instead.`);
     document.getElementById("fixFile").disabled = true;
   }
 }

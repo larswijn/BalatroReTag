@@ -34,7 +34,7 @@ function unjsonifyParsedSaveFile(parsedSaveFile) {
 }
 
 async function readFile(userUpload) {
-  // read the file, insert content into `saveFile`, call `updateIsBugged`
+  // read the file from a compressed file into a string
   let tempFile = "";
   const decompressedStream = userUpload.files[0].stream().pipeThrough(new DecompressionStream("deflate-raw"));
   const reader = decompressedStream.getReader();
